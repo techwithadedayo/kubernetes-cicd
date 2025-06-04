@@ -40,11 +40,11 @@ Although Docker Desktop runs on Windows, Jenkins runs in WSL, so Docker CLI must
 Install Docker inside WSL:
 👉 [https://docs.docker.com/engine/install/ubuntu/](https://docs.docker.com/engine/install/ubuntu/)
 
-After installation, allow Jenkins to access Docker:
+After installation, allow docker to access sudo:
 
 ```bash
-sudo usermod -aG docker jenkins
-sudo systemctl restart jenkins
+sudo groupadd docker
+sudo usermod -aG docker $USER
 ```
 
 Ensure Docker works in WSL:
@@ -75,6 +75,13 @@ After installation:
 ```bash
 sudo systemctl start jenkins
 sudo systemctl enable jenkins
+```
+
+After installation, allow Jenkins to access Docker:
+
+```bash
+sudo usermod -aG docker jenkins
+sudo systemctl restart jenkins
 ```
 
 Access Jenkins via:
