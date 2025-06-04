@@ -144,7 +144,7 @@ minikube start --driver=docker
 ## 🚀 Step 9: Install Argo CD (Optional for GitOps)
 
 Follow Argo CD setup:
-👉 [https://argo-cd.readthedocs.io/en/stable/getting\_started/](https://argo-cd.readthedocs.io/en/stable/getting_started/)
+👉 [https://argo-cd.readthedocs.io/en/stable/getting_started/](https://argo-cd.readthedocs.io/en/stable/getting_started/)
 
 After installation, retrieve the admin password:
 
@@ -154,8 +154,9 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 
 Login via browser:
 
+kubectl port-forward svc/argocd-server -n argocd 9090:443
 ```
-http://localhost:8080
+http://localhost:9090
 ```
 
 ---
