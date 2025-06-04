@@ -4,7 +4,7 @@ pipeline {
         IMAGE_NAME = 'techwithadedayo/simple-login-api'
         IMAGE_TAG = "${env.BUILD_NUMBER}"
         DOCKER_CREDENTIALS_ID = 'dockerhub-creds'
-        GIT_CREDENTIALS_ID = 'git-credentials-id'
+        GIT_CREDENTIALS_ID = 'git-https-creds'
         GITOPS_REPO = 'https://github.com/techwithadedayo/kubernetes-tutorial.git'
     }
     stages {
