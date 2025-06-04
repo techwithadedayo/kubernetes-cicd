@@ -1,0 +1,52 @@
+pipeline {
+    agent any
+    environment {
+        IMAGE_NAME = 'techwithadedayo/simple-login-api'
+        IMAGE_TAG = "${env.BUILD_NUMBER}"
+        DOCKER_CREDENTIALS_ID = 'dockerhub-creds'
+        GIT_CREDENTIALS_ID = 'git-credentials-id'
+        GITOPS_REPO = 'https://github.com/techwithadedayo/kubernetes-tutorial.git'
+    }
+    stages {
+        stage('Clone Source') {
+            steps {
+                git url: 'https://github.com/techwithadedayo/simple-login-api.git', branch: 'docker'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                }
+            }
+        }
+        stage('Push to DockerHub') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
+                        sh "docker push ${IMAGE_NAME}:${IMAGE_TAG}"
+                    }
+                }
+            }
+        }
+        stage('Update GitOps Repo') {
+            steps {
+                dir('gitops') {
+                    deleteDir()
+                    withCredentials([usernamePassword(credentialsId: "${GIT_CREDENTIALS_ID}", usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
+                        sh """
+                            git clone https://${GIT_USER}:${GIT_TOKEN}@github.com/techwithadedayo/kubernetes-tutorial.git .
+                            sed -i 's|image: ${IMAGE_NAME}:.*|image: ${IMAGE_NAME}:${IMAGE_TAG}|' 02-Tutorial-Application/deployment/00-app-deployment.yaml
+                            git config user.email "techwithadedayo@gmail.com"
+                            git config user.name "Adedayo Akande"
+                            git add .
+                            git commit -m 'Update image tag to ${IMAGE_TAG}' || echo "No changes"
+                            git push origin master
+                        """
+                    }
+                }
+            }
+        }
+    }
+}
