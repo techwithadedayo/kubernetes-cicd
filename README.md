@@ -1,7 +1,3 @@
-Here's a polished and easy-to-follow `README.md` guide you can share with your tutors or students, based on your current WSL (Ubuntu) and Windows setup:
-
----
-
 # 🚀 Jenkins CI/CD Pipeline Setup (WSL + Windows Environment)
 
 This guide walks you through setting up a CI/CD pipeline using **Jenkins**, **Docker**, **Minikube**, **kubectl**, and **Argo CD** in a **Windows + WSL (Ubuntu)** hybrid environment.
@@ -176,6 +172,3 @@ http://localhost:9090
 
 You are now ready to run full CI/CD pipelines with Docker builds, GitOps deployments, and Kubernetes!
 
----
-
-Let me know if you want to turn this into a downloadable PDF or if you'd like a `bash` script to automate these steps.
